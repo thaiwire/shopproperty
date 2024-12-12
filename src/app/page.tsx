@@ -1,7 +1,9 @@
+import { GetCurrentUserFromMongoDB } from "@/actions/users";
 import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
+  await GetCurrentUserFromMongoDB();
   const loggedInUser = await currentUser();
   console.log(loggedInUser);
   let username = loggedInUser?.username;
@@ -13,7 +15,7 @@ export default async function Home() {
 
   return (
     <div className=" flex items-center justify-center flex-col gap-10 h-screen">
-      <UserButton afterSignOutUrl="/" />
+      <UserButton afterSignOutUrl="/sign-in" />
       <h1>Clerk user id : {loggedInUser?.id}</h1>
       <h1>Username : {username}</h1>
       <h1>email :{loggedInUser?.emailAddresses[0]?.emailAddress}</h1>
